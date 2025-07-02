@@ -7,12 +7,14 @@ function Navbar(){
   const [visible, setVisible] = useState(false);
 
   return (
-    <div className="flex items-center justify-between font-medium bg-black">
-      <img
-        src={assets.logo}
-        className="w-43 m-2 ml-4"
-        alt="Logo"
-      />
+    <div className="flex items-center justify-between font-medium bg-[#f66197]">
+      <Link to='/'>
+        <img
+          src={assets.logo}
+          className="w-43 m-2 ml-4"
+          alt="Logo"
+        />
+      </Link>
       <div className="flex items-center gap-10">
         <ul className=" hidden sm:flex gap-5 text-sm text-white">
           <NavLink to='/' className="flex flex-col items-center gap-1">
@@ -46,18 +48,18 @@ function Navbar(){
           <div className="group relative">
             <img src={assets.profile_icon} className="w-5 cursor-pointer" alt="" />
             <div className="group-hover:block hidden absolute dropdown-menu right-0 pt-4">
-              <div className="flex flex-col w-36 bg-black text-white rounded">
-                <p className="cursor-pointer px-3 py-1 border-b hover:bg-slate-500">My Profile</p>
-                <p className="cursor-pointer px-3 py-1 border-b hover:bg-slate-500">Orders</p>
-                <p className="cursor-pointer px-3 py-1 pb-2 hover:bg-slate-500">LogOut</p>
+              <div className="flex flex-col w-36 bg-white text-black rounded">
+                <p className="cursor-pointer px-3 py-1 border-b hover:bg-[#ebe9e2]">My Profile</p>
+                <p className="cursor-pointer px-3 py-1 border-b hover:bg-[#ebe9e2]">Orders</p>
+                <p className="cursor-pointer px-3 py-1 pb-2 hover:bg-[#ebe9e2]">LogOut</p>
               </div>
             </div>
           </div>
           <img onClick={()=>setVisible(true)} src={assets.menu_icon} className="w-5 cursor-pointer sm:hidden " alt="" />
         </div>
 
-        <div className={`absolute top-0 right-0 bottom-0 overflow-hidden bg-black transition-all ${visible ? 'w-50' : 'w-0'}`}>
-          <div className="flex flex-col text-white">
+        <div className={`absolute top-0 right-0 bottom-0 overflow-hidden bg-white transition-all ${visible ? 'w-50' : 'w-0'}`}>
+          <div className="flex flex-col text-black">
             <div onClick={()=>setVisible(false)} className="flex items-center gap-4 p-3 cursor-pointer">
               <img className="h-4 rotate-180" src={assets.dropdown_icon} alt="" />
               <p>Back</p>
