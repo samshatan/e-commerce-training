@@ -1,6 +1,8 @@
 import BestSeller from "@/components/BestSeller";
 import HeroSection from "@/components/HeroSection";
 import LatestCollection from "@/components/LatestCollection";
+import NewsLetterBox from "@/components/NewsLetterBox";
+import OurSalary from "@/components/OurPolicy";
 
 function Home(){
   return(
@@ -8,6 +10,8 @@ function Home(){
       <HeroSection/>
       <LatestCollection/>
       <BestSeller/>
+      <OurSalary/>
+      <NewsLetterBox/>
     </div>
   )
 }

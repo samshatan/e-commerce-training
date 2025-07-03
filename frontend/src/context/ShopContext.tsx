@@ -1,4 +1,4 @@
-import React, { createContext } from "react";
+import { createContext } from "react";
 import type { ReactNode } from "react";
 import { products } from "../assets/frontend_assets/assets";
 

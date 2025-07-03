@@ -7,7 +7,7 @@ function Navbar(){
   const [visible, setVisible] = useState(false);
 
   return (
-    <div className="flex items-center justify-between font-medium bg-[#f66197]">
+    <div className="flex items-center justify-between font-medium bg-[#fa7ad4]">
       <Link to='/'>
         <img
           src={assets.logo}
