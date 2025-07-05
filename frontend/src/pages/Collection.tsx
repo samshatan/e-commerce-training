@@ -15,6 +15,7 @@ function Collection(){
   const [category, setCategory] = useState<string[]>([]);
   const [subCategory, setSubCategory] = useState<string[]>([]);
   const [sortType, setSortType] = useState('relevant');
+  // const [subCategorySizes, setSubCategorySizes] = useState<string[]>([]);
 
   const handleCategory = (event: { target: { value: string; }; }) =>{
     if(category.includes(event.target.value)){
@@ -35,6 +36,15 @@ function Collection(){
     }
   }
 
+  // const handleSubCategorySizes = (event: { target: { value: string; }; }) =>{
+  //   if(subCategorySizes.includes(event.target.value)){
+  //     setSubCategorySizes(prev=>prev.filter(item => item !== event.target.value));
+  //   }
+  //   else{
+  //     setSubCategorySizes(prev => [...prev, event.target.value]);
+  //   }
+  // }
+
   const applyFilter = () =>{
     let filterProducts = products.slice();
     if(category.length>0){
@@ -45,6 +55,9 @@ function Collection(){
       filterProducts = filterProducts.filter(item => subCategory.includes(item.subCategory));
     }
 
+    // if(subCategorySizes.length>0){
+    //   filterProducts = filterProducts.filter(item => subCategorySizes.includes(item.subCategorySizes))
+    // }
     setFilterProducts(filterProducts);
   }
 
@@ -107,6 +120,23 @@ function Collection(){
               </p>
             </div>
           </div>
+          {/* <div className={`border border-gray-300 pl-5 py-3 my-5 ${showFilter ? '' : 'hidden'} sm:block`}>
+            <p className="mb-3 text-sm font-medium ">SIZES</p>
+            <div className="flex flex-col gap-2 text-sm font-light text-gray-700">
+              <p className="flex gap-2">
+                <input type="checkbox" className="w-3" value={'S'} onChange={handleSubCategorySizes} />Small
+              </p>
+              <p className="flex gap-2">
+                <input type="checkbox" className="w-3" value={'M'} onChange={handleSubCategorySizes} />Medium
+              </p>
+              <p className="flex gap-2">
+                <input type="checkbox" className="w-3" value={'L'} onChange={handleSubCategorySizes} />Large
+              </p>
+              <p className="flex gap-2">
+                <input type="checkbox" className="w-3" value={'XL'} onChange={handleSubCategorySizes} />Extra Large
+              </p>
+            </div>
+          </div> */}
         </div>
         <div className="flex-1">
           <div className="flex justify-between text-base sm:text-2xl mb-4">
