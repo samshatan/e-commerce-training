@@ -9,7 +9,7 @@ function Collection(){
 
   const shop = useContext(ShopContext);
   if(!shop) return null;
-  const {products} = shop;
+  const {products, search, showSearch} = shop;
   const [showFilter, setShowFilter] = useState(false);
   const [filterProducts, setFilterProducts] = useState<ProductType[]>([]);
   const [category, setCategory] = useState<string[]>([]);
@@ -47,10 +47,14 @@ function Collection(){
 
   const applyFilter = () =>{
     let filterProducts = products.slice();
+
+    if(showSearch && search){
+      filterProducts = filterProducts.filter(item =>item.name.toLowerCase().includes(search.toLowerCase()))
+    }
+
     if(category.length>0){
       filterProducts = filterProducts.filter(item => category.includes(item.category));
     }
-
     if(subCategory.length>0){
       filterProducts = filterProducts.filter(item => subCategory.includes(item.subCategory));
     }
@@ -78,7 +82,11 @@ function Collection(){
 
   useEffect(()=>{
     applyFilter();
-  },[category, subCategory]);
+  },[category, subCategory, search, showSearch]);
+
+  // useEffect(()=>{
+  //   applyFilter();
+  // },[])
 
   useEffect(()=>{
     applySort();
