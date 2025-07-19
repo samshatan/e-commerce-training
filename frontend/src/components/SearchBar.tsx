@@ -1,4 +1,3 @@
-import { assets } from "@/assets/frontend_assets/assets";
 import { ShopContext } from "@/context/ShopContext";
 import { useContext, useEffect, useState } from "react";
 // import { useLocation } from "react-router-dom";
@@ -21,7 +20,7 @@ function SearchBar(){
   // },[location])
 
   return showSearch /* && visible */ ? (
-    <div className="flex text-center">
+    <div className="hidden sm:flex text-center">
       <div className="inline-flex items-center justify-center border border-white px-5 py-2">
       <input value={search} onChange={(e)=>setSearch(e.target.value)} type="text" className="flex-1 outline-none bg-inherit text-sm" placeholder="Search" />
       </div>

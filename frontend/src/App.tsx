@@ -12,7 +12,6 @@ import Orders from './pages/Orders'
 import Navbar from './components/Navbar'
 import SignUp from './pages/SignUp'
 import Footer from './components/Footer'
-import SearchBar from './components/SearchBar'
 
 function App() {
   return (

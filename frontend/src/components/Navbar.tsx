@@ -7,9 +7,10 @@ import SearchBar from "./SearchBar";
 function Navbar(){
 
   const [visible, setVisible] = useState(false);
+  const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const shop = useContext(ShopContext);
     if(!shop) return null;
-    const { setShowSearch } = shop;
+    const { setShowSearch, getTotalCartItems } = shop;
 
   return (
     <div className="flex items-center justify-between font-medium bg-[#fa7ad4]">
@@ -49,19 +50,19 @@ function Navbar(){
           <img src={assets.search_icon} onClick={()=>setShowSearch(true)} className="w-5 cursor-pointer" alt="" />
           <Link to='/cart' className="relative">
             <img src={assets.cart_icon} className="w-5 min-w-5" alt="" />
-              <p className="absolute right-[-5px] bottom-[-5px] w-4 text-center leading-4 bg-black text-white aspect-square rounded-full text-[8px]">7</p>
+              <p className="absolute right-[-5px] bottom-[-5px] w-4 text-center leading-4 bg-black text-white aspect-square rounded-full text-[8px]">{getTotalCartItems()}</p>
           </Link>
           <div className="group relative">
-            <img src={assets.profile_icon} className="w-5 cursor-pointer" alt="" />
-            <div className="group-hover:block hidden absolute dropdown-menu right-0 pt-4">
-              <div className="flex flex-col w-36 bg-white text-black rounded">
+            <img src={assets.profile_icon} className="w-5 cursor-pointer" alt="" onClick={() => setProfileDropdownOpen((open) => !open)}/>
+            <div className={`absolute dropdown-menu right-0 pt-4 z-10 ${profileDropdownOpen ? 'block' : 'hidden'} sm:group-hover:block sm:${profileDropdownOpen ? '' : 'hidden'}`} onClick={() => setProfileDropdownOpen(false)}>
+              <div className="flex flex-col w-36 border border-bg-black-1 bg-white text-black rounded">
                 <p className="cursor-pointer px-3 py-1 border-b hover:bg-[#ebe9e2]">My Profile</p>
                 <p className="cursor-pointer px-3 py-1 border-b hover:bg-[#ebe9e2]">Orders</p>
-                <p className="cursor-pointer px-3 py-1 pb-2 hover:bg-[#ebe9e2]">LogOut</p>
+                <Link to={'/signup'}><p className="cursor-pointer px-3 py-1 pb-2 hover:bg-[#ebe9e2]">SignUp</p></Link>
               </div>
             </div>
           </div>
-          <img onClick={()=>setVisible(true)} src={assets.menu_icon} className="w-5 cursor-pointer sm:hidden " alt="" />
+          <img onClick={()=>{setVisible(true); setProfileDropdownOpen(false)}} src={assets.menu_icon} className="w-5 cursor-pointer sm:hidden " alt="" />
         </div>
 
         <div className={`absolute top-0 right-0 bottom-0 overflow-hidden bg-white transition-all ${visible ? 'w-50' : 'w-0'}`}>
