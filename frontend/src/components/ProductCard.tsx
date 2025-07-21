@@ -6,7 +6,7 @@ interface ProductCardProps{
   product: ProductType;
 }
 
-function ProductCart({product}: ProductCardProps){
+function ProductCard({product}: ProductCardProps){
 
   const shop = useContext(ShopContext);
   if (!shop) return null;
@@ -46,4 +46,4 @@ function ProductCart({product}: ProductCardProps){
     </div>
   );
 };
-export default ProductCart;
+export default ProductCard;

@@ -1,16 +1,69 @@
 import { Link, NavLink } from "react-router-dom";
 import { assets } from "../assets/frontend_assets/assets";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { ShopContext } from "@/context/ShopContext";
 import SearchBar from "./SearchBar";
 
 function Navbar(){
-
-  const [visible, setVisible] = useState(false);
-  const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
+  
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [profileDropdownOpen, setProfileDropdownOpen] = useState<boolean>(false);
   const shop = useContext(ShopContext);
-    if(!shop) return null;
-    const { setShowSearch, getTotalCartItems } = shop;
+  if (!shop) return null;
+  const { setShowSearch, getTotalCartItems } = shop;
+
+  const profileDropdownRef = useRef<HTMLDivElement>(null);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
+
+  const toggleProfileDropdown = (): void => {
+    setProfileDropdownOpen(prev => !prev);
+    if (mobileMenuOpen) setMobileMenuOpen(false);
+  };
+
+  const toggleMobileMenu = (): void => {
+    setMobileMenuOpen(prev => !prev);
+    if (profileDropdownOpen) setProfileDropdownOpen(false);
+  };
+
+  useEffect(() => {
+    const handleOutsideClickAndScroll = (event: MouseEvent | Event): void => {
+      if (event.type === 'mousedown' && profileDropdownRef.current && !profileDropdownRef.current.contains(event.target as Node)) {
+        setProfileDropdownOpen(false);
+      }
+      else if (profileDropdownOpen && (event.type === 'scroll' || event.type === 'touchmove')) {
+        setProfileDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleOutsideClickAndScroll);
+    window.addEventListener('scroll', handleOutsideClickAndScroll);
+    document.addEventListener('touchmove', handleOutsideClickAndScroll); // For mobile scrolling detection
+
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideClickAndScroll);
+      window.removeEventListener('scroll', handleOutsideClickAndScroll);
+      document.removeEventListener('touchmove', handleOutsideClickAndScroll);
+    };
+  }, [profileDropdownOpen]);
+
+  useEffect(() => {
+    const handleOutsideClickAndScroll = (event: MouseEvent | Event): void => {
+      if (event.type === 'mousedown' && mobileMenuRef.current && !mobileMenuRef.current.contains(event.target as Node)) {
+        setMobileMenuOpen(false);
+      }
+      else if (mobileMenuOpen && (event.type === 'scroll' || event.type === 'touchmove')) {
+        setMobileMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleOutsideClickAndScroll);
+    window.addEventListener('scroll', handleOutsideClickAndScroll);
+    document.addEventListener('touchmove', handleOutsideClickAndScroll);
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideClickAndScroll);
+      window.removeEventListener('scroll', handleOutsideClickAndScroll);
+      document.removeEventListener('touchmove', handleOutsideClickAndScroll);
+    };
+  }, [mobileMenuOpen]);
 
   return (
     <div className="flex items-center justify-between font-medium bg-[#fa7ad4]">
@@ -44,17 +97,26 @@ function Navbar(){
             <hr className="w-2/4 border-none h-[1.5px] bg-white hidden"></hr>
           </NavLink>
         </ul>
-        
+
         <div className="flex items-center gap-5 mr-5">
-          <SearchBar/>
-          <img src={assets.search_icon} onClick={()=>setShowSearch(true)} className="w-5 cursor-pointer" alt="" />
+          <SearchBar />
+          <img src={assets.search_icon} onClick={() => setShowSearch(true)} className="w-5 cursor-pointer sm:hidden" alt="" />
           <Link to='/cart' className="relative">
             <img src={assets.cart_icon} className="w-5 min-w-5" alt="" />
-              <p className="absolute right-[-5px] bottom-[-5px] w-4 text-center leading-4 bg-black text-white aspect-square rounded-full text-[8px]">{getTotalCartItems()}</p>
+            <p className="absolute right-[-5px] bottom-[-5px] w-4 text-center leading-4 bg-black text-white aspect-square rounded-full text-[8px]">{getTotalCartItems()}</p>
           </Link>
-          <div className="group relative">
-            <img src={assets.profile_icon} className="w-5 cursor-pointer" alt="" onClick={() => setProfileDropdownOpen((open) => !open)}/>
-            <div className={`absolute dropdown-menu right-0 pt-4 z-10 ${profileDropdownOpen ? 'block' : 'hidden'} sm:group-hover:block sm:${profileDropdownOpen ? '' : 'hidden'}`} onClick={() => setProfileDropdownOpen(false)}>
+          {/* Profile Dropdown */}
+          <div className="group relative" ref={profileDropdownRef}>
+            <img
+              src={assets.profile_icon}
+              className="w-5 cursor-pointer"
+              alt="Profile Icon"
+              onClick={toggleProfileDropdown}
+            />
+            <div
+              className={`absolute dropdown-menu right-0 pt-4 z-10 ${profileDropdownOpen ? 'block' : 'hidden'} sm:group-hover:block sm:${profileDropdownOpen ? '' : 'hidden'}`}
+              onClick={() => setProfileDropdownOpen(false)}
+            >
               <div className="flex flex-col w-36 border border-bg-black-1 bg-white text-black rounded">
                 <p className="cursor-pointer px-3 py-1 border-b hover:bg-[#ebe9e2]">My Profile</p>
                 <p className="cursor-pointer px-3 py-1 border-b hover:bg-[#ebe9e2]">Orders</p>
@@ -62,31 +124,38 @@ function Navbar(){
               </div>
             </div>
           </div>
-          <img onClick={()=>{setVisible(true); setProfileDropdownOpen(false)}} src={assets.menu_icon} className="w-5 cursor-pointer sm:hidden " alt="" />
+          {/* Mobile Menu Icon */}
+          <img
+            onClick={toggleMobileMenu}
+            src={assets.menu_icon}
+            className="w-5 cursor-pointer sm:hidden "
+            alt="Menu Icon"
+          />
         </div>
 
-        <div className={`absolute top-0 right-0 bottom-0 overflow-hidden bg-white transition-all ${visible ? 'w-50' : 'w-0'}`}>
+        {/* Mobile Sidebar */}
+        <div className={`absolute top-0 right-0 bottom-0 overflow-hidden bg-white transition-all z-20 ${mobileMenuOpen ? 'w-50' : 'w-0'}`} ref={mobileMenuRef}> {/* <-- Ref attached here */}
           <div className="flex flex-col text-black">
-            <div onClick={()=>setVisible(false)} className="flex items-center gap-4 p-3 cursor-pointer">
-              <img className="h-4 rotate-180" src={assets.dropdown_icon} alt="" />
+            <div onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-4 p-3 cursor-pointer">
+              <img className="h-4 rotate-180" src={assets.dropdown_icon} alt="Back Arrow" />
               <p>Back</p>
             </div>
-            <NavLink onClick={()=>setVisible(false)} className="py-2 pl-6 border-b" to='/'>
+            <NavLink onClick={() => setMobileMenuOpen(false)} className="py-2 pl-6 border-b" to='/'>
               Home
             </NavLink>
-            <NavLink onClick={()=>setVisible(false)} className="py-2 pl-6 border-b" to='/about'>
+            <NavLink onClick={() => setMobileMenuOpen(false)} className="py-2 pl-6 border-b" to='/about'>
               About
             </NavLink>
-            <NavLink onClick={()=>setVisible(false)} className="py-2 pl-6 border-b" to='/collection'>
+            <NavLink onClick={() => setMobileMenuOpen(false)} className="py-2 pl-6 border-b" to='/collection'>
               Collection
             </NavLink>
-            <NavLink onClick={()=>setVisible(false)} className="py-2 pl-6 border-b" to='/contact'>
+            <NavLink onClick={() => setMobileMenuOpen(false)} className="py-2 pl-6 border-b" to='/contact'>
               Contact
             </NavLink>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }
 export default Navbar;

@@ -3,7 +3,6 @@ import './App.css'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Collection from './pages/Collection'
-import About from './pages/About'
 import Contact from './pages/Contact'
 import Product from './pages/Product'
 import Cart from './pages/Cart'
@@ -12,6 +11,7 @@ import Orders from './pages/Orders'
 import Navbar from './components/Navbar'
 import SignUp from './pages/SignUp'
 import Footer from './components/Footer'
+import About from './pages/About'
 
 function App() {
   return (
