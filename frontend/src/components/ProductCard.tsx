@@ -22,7 +22,7 @@ function ProductCard({product}: ProductCardProps){
 
   return (
     <div className="product-card">
-      <img src={Array.isArray(product.image) ? product.image[0] : product.image} alt={product.name} />
+      <img loading="lazy" src={Array.isArray(product.image) ? product.image[0] : product.image} alt={product.name} />
       <h3>{product.name}</h3>
       <p>{currency}{product.price.toFixed(2)}</p>
       {product.sizes && product.sizes.length > 1 && ( // Only show if there's more than one size

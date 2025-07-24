@@ -18,7 +18,7 @@ function HeroSection(){
         </div>
       </div>
       {/*Right Side*/}
-      <img src={assets.hero_img} className="w-full sm:w-1/2" alt="Hero section with featured products" />
+      <img loading="lazy" src={assets.hero_img} className="w-full sm:w-1/2" alt="Hero section with featured products" />
     </div>
   )
 }
