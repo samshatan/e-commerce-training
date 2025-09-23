@@ -18,6 +18,10 @@ function ProductCard({product}: ProductCardProps){
     addToCart(product.id, selectedSize);
   }
 
+  const AddWishList = () =>{
+    
+  }
+
   const itemInCart = cartItems.find(item => item.id ===product.id  && item.size === selectedSize);
 
   return (
@@ -42,6 +46,9 @@ function ProductCard({product}: ProductCardProps){
       )}
       <button onClick={handleAddToCart} disabled={!!itemInCart && itemInCart.quantity >= 10}>
         {itemInCart ? `Add More (${itemInCart.quantity})` : 'Add to Cart'}
+      </button>
+      <button onClick={}>
+
       </button>
     </div>
   );

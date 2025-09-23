@@ -12,6 +12,7 @@ import Navbar from './components/Navbar'
 import SignUp from './pages/SignUp'
 import Footer from './components/Footer'
 import About from './pages/About'
+import Profile from './pages/Profile'
 
 function App() {
   return (

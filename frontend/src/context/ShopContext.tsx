@@ -16,6 +16,7 @@ export interface ShopContextType {
   updateQuantity : (productId : string, size: string, newQuantity: number) => void;
   getTotalCartAmount: () => number;
   getTotalCartItems: () => number;
+  getTotalWishListItems: () => number;
   clearCart: () => void;
 }
 
@@ -39,6 +40,25 @@ const ShopContextProvider = (props: ShopContextProviderProps) => {
   const delivery_fee = 10;
   const [search, setSearch] = useState('');
   const [showSearch, setShowSearch] = useState(true);
+  const [wishList, SetWishList] = useState<number>(()=>{
+    try{
+      const local = localStorage.getItem('wishList');
+      return local? JSON.parse(local): [];
+    }
+    catch(error){
+      console.error("Failed to fetch wishList from local storage", error);
+      return [];
+    }
+  });
+
+  useEffect(()=>{
+    try{
+      localStorage.setItem('wishList', JSON.stringify(wishList));
+    }
+    catch(error){
+      console.error("Failed to save wishList to local storage", error);
+    }
+  },[wishList]); 1
   const [cartItems, setCartItems] = useState<CartItem[]>(()=>{
     try{
       const localCart = localStorage.getItem('cartItems');
@@ -116,19 +136,39 @@ const ShopContextProvider = (props: ShopContextProviderProps) => {
     });
   };
 
+  const AddWishList = (productId: string) =>{
+    SetWishList((prevItems) =>{
+      const existingItems = prevItems.findIndex((item) => item.id === productId);
+      if (existingItems > -1) {
+        return prevItems.map((item, index) =>
+          index === existingItems
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        );
+      }
+      else{
+        const productToAdd = products.find((item) => item.id ===productId);
+
+         
+  };
+
+  const getTotalWishListItems = (): number =>{
+    return wishList.reduce((total: number,item: any) => total+item.quantity,0);
+  }
+
   const getTotalCartAmount = (): number =>{
-    return cartItems.reduce((total, item) => total+ item.price*item.quantity, 0);
+    return cartItems.reduce((total: number, item: any) => total+ item.price*item.quantity, 0);
   };
 
   const getTotalCartItems =(): number =>{
-    return cartItems.reduce((total, item) => total + item.quantity , 0);
+    return cartItems.reduce((total: number, item: any) => total + item.quantity , 0);
   };
 
   const clearCart = () => {
     setCartItems([]);
   };
 
-
+w
   const value: ShopContextType = {
     products,
     currency,
@@ -142,6 +182,7 @@ const ShopContextProvider = (props: ShopContextProviderProps) => {
     removeFromCart,
     updateQuantity,
     getTotalCartAmount,
+    getTotalWishListItems,
     getTotalCartItems,
     clearCart,
   };
