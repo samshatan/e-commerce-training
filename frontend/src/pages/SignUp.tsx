@@ -1,5 +1,94 @@
+import { useState } from "react";
+
 function SignUp(){
-  return(
+    const [data, setData] = useState({
+        fullName: '',
+        username: '',
+        email: '',
+        password: '',
+        confirmPassword: ''
+    });
+    const [files,setFiles] = useState({
+        avatar: null,
+        coverImage: null
+    });
+
+    const handdleChange = (e: { target: { name: any; value: any; }; }) => {
+        setData({
+            ...data,
+            [e.target.name]: e.target.value
+        });
+    };
+
+    const handleFileChange = (e: { target: { name: any; files: any; }; }) => {
+        const { name, files: selectedFiles } = e.target;
+        setFiles(prevFiles =>({
+            ...prevFiles,
+            [name]: selectedFiles[0]
+        }));
+    };
+
+    const handleSubmit = async (e: { preventDefault: () => void; }) => {
+        e.preventDefault();
+        try {
+            if (!files.avatar) {
+                alert('Avatar is required!');
+                return;
+            }
+            const formData = new FormData();
+            formData.append('fullName', data.fullName);
+            formData.append('username', data.username);
+            formData.append('email', data.email);
+            formData.append('password', data.password);
+            formData.append('confirmPassword', data.confirmPassword);
+            formData.append('avatar', files.avatar);
+            if (files.coverImage) {
+                formData.append('coverImage', files.coverImage);
+            }
+            const response = await fetch('http://localhost:8000/api/v1/users/register', {
+                method: 'POST',
+                body: formData,
+            });
+            let result;
+            try {
+                result = await response.json();
+            } catch (jsonError) {
+                if (response.status === 409) {
+                    alert('A user with this email or username already exists.');
+                } else {
+                    alert('An unexpected error occurred.');
+                }
+                return;
+            }
+            if (!response.ok) {
+                if (response.status === 409) {
+                    alert(result.message || 'A user with this email or username already exists.');
+                } else {
+                    alert(result.message || 'Something went wrong');
+                }
+                return;
+            }
+
+            console.log('Success:', result);
+            setData({
+                fullName: '',
+                username: '',
+                email: '',
+                password: '',
+                confirmPassword: ''
+            });
+            setFiles({
+                avatar: null,
+                coverImage: null
+            });
+            alert('User registered successfully!');
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An unexpected error occurred.');
+        }
+    };
+
+    return(
     <div className="container mx-auto px-4 py-6 ">
         <div className="flex items-center justify-center px-4 py-8 ">
             <div className="rounded-xl border bg-card text-card-foreground shadow w-full max-w-md ">
@@ -7,25 +96,56 @@ function SignUp(){
                     <h3 className="tracking-tight text-3xl font-bold">Sign Up</h3>
                 </div>
                 <div className="p-6 pt-0 space-y-4">
-                    <form className="space-y-4" aria-label="Sign up form">
-                    <div className="space-y-2">
-                        <label htmlFor="name" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Name</label>
-                        <input type="text" className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50" id="name" placeholder="Enter Your Name" aria-label="Name" required/>
-                    </div>
-                    <div className="space-y-2">
-                        <label htmlFor="email" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Email</label>
-                        <input type="email" className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50" id="email" placeholder="Enter Your Email" aria-label="Email address" required/>
-                    </div>
+                    <form className="space-y-4" aria-label="Sign up form" onSubmit={handleSubmit}>
+                        <div className="space-y-2">
+                            <label htmlFor="fullName" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Full Name</label>
+                            <input type="text" name="fullName" value={data.fullName} onChange={handdleChange} className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50" id="fullName" placeholder="Enter Your Full Name" aria-label="Full Name" required/>
+                        </div>
+                        <div className="space-y-2">
+                            <label htmlFor="username" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Username</label>
+                            <input type="text" name="username" value={data.username} onChange={handdleChange} className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50" id="username" placeholder="Enter Your Username" aria-label="Username" required/>
+                        </div>
+                        <div className="space-y-2">
+                            <label htmlFor="email" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Email</label>
+                            <input type="email" name="email" value={data.email} onChange={handdleChange} className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50" id="email" placeholder="Enter Your Email" aria-label="Email address" required/>
+                        </div>
+                        <div className="space-y-2">
+                            <label htmlFor="avatar" className="text-sm font-medium leading-none">
+                            Avatar (Required)
+                            </label>
+                            <input
+                            type="file"
+                            name="avatar"
+                            onChange={handleFileChange}
+                            accept="image/*"
+                            className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm"
+                            id="avatar"
+                            required
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <label htmlFor="coverImage" className="text-sm font-medium leading-none">
+                            Cover Image (Optional)
+                            </label>
+                            <input
+                            type="file"
+                            name="coverImage"
+                            onChange={handleFileChange}
+                            accept="image/*"
+                            className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm"
+                            id="coverImage"
+                            />
+                        </div>
                         <div className="space-y-2">
                             <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" htmlFor="password">Password</label>
                             <div className="relative">
-                                <input type="password" className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50" id="password" placeholder="Enter Your Password" aria-label="Password" required/>
+                                <input type="password" name="password" value={data.password} onChange={handdleChange} className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50" id="password" placeholder="Enter Your Password" aria-label="Password" required/>
                             </div>
                         </div>
                         <div className="space-y-2 pb-2">
-                            <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" htmlFor="confirm-password">Confirm Password</label>
+                            <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" htmlFor="confirmPassword">Confirm Password</label>
                             <div className="relative">
-                                <input type="password" className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50" id="confirm-password" placeholder="Confirm Your Password" aria-label="Confirm password" required/>
+                                <input type="password" name="confirmPassword" value={data.confirmPassword} onChange={handdleChange} className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50" id="confirmPassword" placeholder="Confirm Your Password" aria-label="Confirm password" required/>
                             </div>
                         </div>
                         <button className="bg-[#f66197] inline-flex items-center justify-center whitespace-nowrap border border-input cursor-pointer rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 text-primary-foreground shadow hover:bg-primary/90 h-9 px-4 py-2 w-full" type="submit" aria-label="Sign up">Sign Up</button>

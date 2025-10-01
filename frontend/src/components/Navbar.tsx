@@ -132,8 +132,24 @@ function Navbar(){
     }
   ];
 
+  
+
+  async function fetchUserData(){
+    try {
+      const response = await fetch("http://localhost:8000/api/v1/users/user");
+      if(!response.ok){
+        throw new Error("Failed to fetch user data");
+      }
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  }
+  
+
   return (
-    <div className="flex items-center justify-between font-medium bg-[#fa7ad4]">
+    <div className="flex items-center justify-between font-medium bg-gradient-to-r from-primary-500 to-primary-600">
       <Link to='/'>
         <img
           src={assets.logo}

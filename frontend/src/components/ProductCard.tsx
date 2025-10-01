@@ -44,12 +44,12 @@ function ProductCard({product}: ProductCardProps){
           </select>
         </div>
       )}
-      <button onClick={handleAddToCart} disabled={!!itemInCart && itemInCart.quantity >= 10}>
+      {/* <button onClick={handleAddToCart} disabled={!!itemInCart && itemInCart.quantity >= 10}>
         {itemInCart ? `Add More (${itemInCart.quantity})` : 'Add to Cart'}
       </button>
-      <button onClick={}>
+      <button onClick={}> */}
 
-      </button>
+      {/* </button> */}
     </div>
   );
 };

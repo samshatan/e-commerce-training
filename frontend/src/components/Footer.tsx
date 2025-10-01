@@ -2,7 +2,7 @@ import { assets } from "@/assets/frontend_assets/assets";
 
 function Footer(){
   return(
-    <div className="bg-[#232F3E]">
+    <div className="bg-neutral-800">
       <div className="flex flex-col justify-around sm:grid grid-cols-[3fr_1fr_1fr] gap-14 my-10 m-40 text-sm">
         <div>
           <img loading="lazy" src={assets.logo} className="mb-5 w-32" alt="E-Commerce Logo" />

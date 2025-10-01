@@ -22,10 +22,12 @@ const Cart: React.FC = () => {
       <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 sm:mb-8">
           <div className="flex items-center gap-2 sm:gap-3">
-            <ShoppingBag className="w-6 h-6 sm:w-8 sm:h-8 text-blue-600" />
+            {/* CHANGED: text-blue-600 to text-pink-600 */}
+            <ShoppingBag className="w-6 h-6 sm:w-8 sm:h-8 text-pink-600" />
             <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">Shopping Cart</h1>
           </div>
-          <div className="bg-blue-100 text-blue-800 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full font-semibold text-sm sm:text-base self-start sm:self-auto">
+          {/* CHANGED: bg-blue-100 text-blue-800 to bg-pink-100 text-pink-800 */}
+          <div className="bg-pink-100 text-pink-800 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full font-semibold text-sm sm:text-base self-start sm:self-auto">
             {getTotalCartItems()} {getTotalCartItems() === 1 ? 'item' : 'items'}
           </div>
         </div>
@@ -34,7 +36,8 @@ const Cart: React.FC = () => {
             <ShoppingBag className="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 text-gray-300 mx-auto mb-4 sm:mb-6" />
             <h2 className="text-xl sm:text-2xl font-semibold text-gray-600 mb-2">Your cart is empty</h2>
             <p className="text-gray-500 mb-6 sm:mb-8 text-sm sm:text-base">Add some items to get started!</p>
-            <button className="bg-blue-600 text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg hover:bg-blue-700 transition-colors font-semibold text-sm sm:text-base">
+            {/* CHANGED: bg-blue-600 hover:bg-blue-700 to bg-pink-500 hover:bg-pink-600 */}
+            <button className="bg-pink-500 text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg hover:bg-pink-600 transition-colors font-semibold text-sm sm:text-base">
               Continue Shopping
             </button>
           </div>
@@ -62,7 +65,8 @@ const Cart: React.FC = () => {
                               {item.name}
                             </h3>
                             <p className="text-sm text-gray-600">Size: {item.size}</p>
-                            <p className="text-xl sm:text-2xl font-bold text-blue-600 mt-1">
+                            {/* CHANGED: text-blue-600 to text-pink-600 */}
+                            <p className="text-xl sm:text-2xl font-bold text-pink-600 mt-1">
                               {currency}{item.price.toFixed(2)}
                             </p>
                           </div>
@@ -137,7 +141,8 @@ const Cart: React.FC = () => {
                   <div className="border-t border-gray-200 pt-3 sm:pt-4">
                     <div className="flex justify-between items-center">
                       <span className="text-lg sm:text-xl font-bold text-gray-900">Total</span>
-                      <span className="text-xl sm:text-2xl font-bold text-blue-600">
+                      {/* CHANGED: text-blue-600 to text-pink-600 */}
+                      <span className="text-xl sm:text-2xl font-bold text-pink-600">
                         {currency}{(getTotalCartAmount() + delivery_fee).toFixed(2)}
                       </span>
                     </div>
@@ -145,7 +150,8 @@ const Cart: React.FC = () => {
                 </div>
                 
                 <div className="p-4 sm:p-6 bg-gray-50">
-                  <button className="w-full bg-blue-600 text-white py-3 sm:py-4 px-4 sm:px-6 rounded-lg hover:bg-blue-700 transition-colors font-semibold flex items-center justify-center gap-2 text-sm sm:text-base lg:text-lg touch-manipulation">
+                  {/* CHANGED: bg-blue-600 hover:bg-blue-700 to bg-pink-500 hover:bg-pink-600 */}
+                  <button className="w-full bg-pink-500 text-white py-3 sm:py-4 px-4 sm:px-6 rounded-lg hover:bg-pink-600 transition-colors font-semibold flex items-center justify-center gap-2 text-sm sm:text-base lg:text-lg touch-manipulation">
                     <CreditCard className="w-4 h-4 sm:w-5 sm:h-5" />
                     Proceed to Checkout
                   </button>

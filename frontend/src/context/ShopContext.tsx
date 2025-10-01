@@ -16,7 +16,7 @@ export interface ShopContextType {
   updateQuantity : (productId : string, size: string, newQuantity: number) => void;
   getTotalCartAmount: () => number;
   getTotalCartItems: () => number;
-  getTotalWishListItems: () => number;
+  // getTotalWishListItems: () => number;
   clearCart: () => void;
 }
 
@@ -136,25 +136,25 @@ const ShopContextProvider = (props: ShopContextProviderProps) => {
     });
   };
 
-  const AddWishList = (productId: string) =>{
-    SetWishList((prevItems) =>{
-      const existingItems = prevItems.findIndex((item) => item.id === productId);
-      if (existingItems > -1) {
-        return prevItems.map((item, index) =>
-          index === existingItems
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        );
-      }
-      else{
-        const productToAdd = products.find((item) => item.id ===productId);
+  // const AddWishList = (productId: string) =>{
+  //   SetWishList((prevItems) =>{
+  //     const existingItems = prevItems.findIndex((item) => item.id === productId);
+  //     if (existingItems > -1) {
+  //       return prevItems.map((item, index) =>
+  //         index === existingItems
+  //           ? { ...item, quantity: item.quantity + 1 }
+  //           : item
+  //       );
+  //     }
+  //     else{
+  //       const productToAdd = products.find((item) => item.id ===productId);
 
          
-  };
+  // };
 
-  const getTotalWishListItems = (): number =>{
-    return wishList.reduce((total: number,item: any) => total+item.quantity,0);
-  }
+  // const getTotalWishListItems = (): number =>{
+  //   return wishList.reduce((total: number,item: any) => total+item.quantity,0);
+  // }
 
   const getTotalCartAmount = (): number =>{
     return cartItems.reduce((total: number, item: any) => total+ item.price*item.quantity, 0);
@@ -168,7 +168,6 @@ const ShopContextProvider = (props: ShopContextProviderProps) => {
     setCartItems([]);
   };
 
-w
   const value: ShopContextType = {
     products,
     currency,
@@ -182,7 +181,7 @@ w
     removeFromCart,
     updateQuantity,
     getTotalCartAmount,
-    getTotalWishListItems,
+    // getTotalWishListItems,
     getTotalCartItems,
     clearCart,
   };
